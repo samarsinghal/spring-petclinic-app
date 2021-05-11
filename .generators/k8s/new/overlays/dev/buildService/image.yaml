@@ -1,0 +1,23 @@
+---
+actions:
+  to: kubernetes/overlays/dev/buildService/image.yaml
+---
+apiVersion: kpack.io/v1alpha1
+kind: Image
+metadata:
+  name: {{artifactId}}
+spec:
+  tag: harbor.tanzu.frankcarta.com/apps/{{artifactId}}
+  serviceAccount: {{artifactId}}-service-account
+  imageTaggingStrategy: BuildNumber
+  failedBuildHistoryLimit: 10
+  successBuildHistoryLimit: 10
+  cacheSize: 2G
+  builder:
+    kind: ClusterBuilder
+    name: base
+  source:
+    git:
+      url: https://github.com/samarsinghal/{{artifactId}}-app.git
+      revision: main
+    # subPath: {{artifactId}}-app

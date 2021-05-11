@@ -1,0 +1,16 @@
+---
+actions:
+  to: kubernetes/overlays/dev/application/application-ingress.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{artifactId}}-ingress
+spec:
+  rules:
+  - host: {{artifactId}}-app.tanzu.frankcarta.com
+    http:
+      paths:
+      - backend:
+          serviceName: {{artifactId}}-service
+          servicePort: 80

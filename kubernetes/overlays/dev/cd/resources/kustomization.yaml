@@ -1,0 +1,28 @@
+
+namePrefix: spring-petclinic-
+commonLabels:
+  app.kubernetes.io/name: spring-petclinic
+images:
+  - name: repository-project/application:1.0.0  #used for Kustomize matching
+    newName: harbor.tanzu.frankcarta.com/apps/spring-petclinic
+    newTag: latest
+# configMapGenerator:
+#   - name: spring-configmap  # naming convention in base use to mount the file to /config/application.properties in a persistent volume
+#     files:
+#       - ../../application/application.properties
+#   - name: spring-configmap-env  # naming convention in base to load environment variables from a reference to this config map
+#     envs:
+#       - ../../application/env.properties
+resources:
+  # - buildService/image.yaml                 
+  - github.com/samarsinghal/spring-boot-web
+  # - application/application-ingress.yaml
+  # - cd/argocd-app.yaml
+  # - ci/task.yaml
+  # - ci/pipeline.yaml                         
+  # - ci/serviceaccount.yaml        
+  # - ci/trigger-template.yaml
+  # - ci/eventlistener.yaml         
+  # - ci/ingress-event-listner.yaml 
+# patches:
+# - application/deployment-patch.yaml

@@ -1,0 +1,67 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+profiles:
+  - name: local
+    build:
+      artifacts:
+        - image: harbor.tanzu.frankcarta.com/apps/spring-petclinic
+          jib:
+            type: maven
+            args:
+              - -Plocal
+          # buildpacks:
+          #   builder: "cloudfoundry/cnb:cflinuxfs3"
+      tagPolicy:
+        sha256: {}
+      local:
+        push: true
+    deploy:
+      kustomize:
+        paths:
+          - kubernetes/overlays/local
+    portForward:
+    - resourceType: deployment
+      resourceName: spring-petclinic-app
+      port: 8080
+      localPort: 9000
+  - name: dev
+    # build:
+    #   artifacts:
+    #     - image: samarsinghal/spring-petclinic
+    #       # jib:
+    #       #   type: maven
+    #       #   args:
+    #       #     - -Plocal
+    #       buildpacks:
+    #         builder: "cloudfoundry/cnb:cflinuxfs3"
+    #   tagPolicy:
+    #     sha256: {}
+    #   # local:
+    #   #   push: false
+    deploy:
+      kustomize:
+        paths:
+          - kubernetes/overlays/dev
+
+
+#
+# Will be using k8s yaml files for services
+#
+  - name: local-services
+    deploy:
+      kustomize:
+        paths:
+          - kubernetes/overlays/local-services/mysql
+#
+# Will be using Helm charts for services
+#
+  - name: local-services-helm
+    deploy:
+      helm:
+        releases:
+        - name: mysql
+          chartPath:
+            bitnami/mysql
+          remote: true
+          setValues:
+            auth.username: springuser

@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spring-petclinic-ingress
+spec:
+  rules:
+  - host: spring-petclinic-app.tanzu.frankcarta.com
+    http:
+      paths:
+      - backend:
+          serviceName: spring-petclinic-service
+          servicePort: 80

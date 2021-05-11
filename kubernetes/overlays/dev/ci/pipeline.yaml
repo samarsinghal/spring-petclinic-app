@@ -1,0 +1,105 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-deploy
+  namespace: tekton-pipelines
+spec:
+  params:
+  - name: imageDigest
+    description: The Image Digest
+  - name: argoAppName
+    description: Project Name
+  - name: configGitUrl
+    description: The application config (GitOps) repository
+  - name: appImage
+    description: The application Docker image name
+  workspaces:
+  - name: config-source
+
+  tasks:
+  # - name: build-java-app
+  #   taskRef:
+  #     name: build-java-app
+  #   params:
+  #   - name: buildRevision
+  #     value: $(params.buildRevision)
+  #   - name: appGitUrl
+  #     value: $(params.appGitUrl)
+  #   - name: appImage
+  #     value: $(params.appImage)
+  #   workspaces:
+  #   - name: app-source
+  #     workspace: app-source
+
+  - name: deploy-dev
+    taskRef:
+      name: deploy
+    # runAfter:
+    # - build-java-app
+    params:
+    - name: environment
+      value: dev
+    - name: argoAppName
+      value: $(params.argoAppName)
+    - name: configGitUrl
+      value: $(params.configGitUrl)
+    - name: appImage
+      value: $(params.appImage)
+    - name: imageDigest
+      value: $(params.imageDigest)
+    workspaces:
+    - name: config-source
+      workspace: config-source
+
+  # - name: run-systemtest
+  #   taskRef:
+  #     name: run-systemtest
+  #   runAfter:
+  #   - deploy-systemtest
+  #   params:
+  #   - name: gateway
+  #     value: 'test.coffee.daschner.dev'
+  #   - name: appGitUrl
+  #     value: $(params.appGitUrl)
+  #   - name: buildRevision
+  #     value: $(params.buildRevision)
+  #   workspaces:
+  #   - name: app-source
+  #     workspace: app-source
+
+  # - name: deploy-prod
+  #   taskRef:
+  #     name: deploy
+  #   runAfter:
+  #   - run-systemtest
+  #   params:
+  #   - name: environment
+  #     value: production
+  #   - name: argoAppName
+  #     value: coffee-testing-prod
+  #   - name: configGitUrl
+  #     value: $(params.configGitUrl)
+  #   - name: appImage
+  #     value: $(params.appImage)
+  #   - name: buildRevision
+  #     value: $(params.buildRevision)
+  #   workspaces:
+  #   - name: config-source
+  #     workspace: config-source
+
+  # - name: run-prod-smoketest
+  #   taskRef:
+  #     name: run-smoketest
+  #   runAfter:
+  #   - deploy-prod
+  #   params:
+  #   - name: gateway
+  #     value: 'coffee.daschner.dev'
+  #   - name: buildRevision
+  #     value: $(params.buildRevision)
+  #   - name: appGitUrl
+  #     value: $(params.appGitUrl)
+  #   workspaces:
+  #   - name: app-source
+  #     workspace: app-source
+---

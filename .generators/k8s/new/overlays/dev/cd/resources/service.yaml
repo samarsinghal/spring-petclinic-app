@@ -1,0 +1,15 @@
+# ---
+# actions:
+#   to: kubernetes/overlays/dev/cd/resources/service.yaml
+# ---
+
+# kind: Service
+# apiVersion: apps/v1
+# metadata:
+#   name: {{artifactId}}-service
+# spec:
+#   # type: LoadBalancer
+#   sessionAffinity: None
+#   ports:
+#     - port: 80
+#       targetPort: 8080

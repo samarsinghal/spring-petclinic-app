@@ -1,0 +1,19 @@
+apiVersion: kpack.io/v1alpha1
+kind: Image
+metadata:
+  name: spring-petclinic
+spec:
+  tag: harbor.tanzu.frankcarta.com/apps/spring-petclinic
+  serviceAccount: spring-petclinic-service-account
+  imageTaggingStrategy: BuildNumber
+  failedBuildHistoryLimit: 10
+  successBuildHistoryLimit: 10
+  cacheSize: 2G
+  builder:
+    kind: ClusterBuilder
+    name: base
+  source:
+    git:
+      url: https://github.com/samarsinghal/spring-petclinic-app.git
+      revision: main
+    # subPath: spring-petclinic-app

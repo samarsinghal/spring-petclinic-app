@@ -1,0 +1,26 @@
+---
+actions:
+  to: kubernetes/overlays/dev/cd/argocd-app.yaml
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{artifactId}}-argo
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  project: default
+  source:
+    path: kubernetes/overlays/dev/cd/resources
+    repoURL: https://github.com/samarsinghal/{{artifactId}}-app.git
+    targetRevision: HEAD
+    # directory:
+    #   recurse: true
+    #   jsonnet: {}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

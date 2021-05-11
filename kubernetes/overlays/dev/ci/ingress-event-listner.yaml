@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-event-listner
+  namespace: tekton-pipelines
+spec:
+  rules:
+  - host: event-listner.tanzu.frankcarta.com
+    http:
+      paths:
+      - backend:
+          serviceName: el-harbor-listener-interceptor
+          servicePort: 8080

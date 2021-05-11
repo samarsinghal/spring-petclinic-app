@@ -1,0 +1,5 @@
+namePrefix: spring-petclinic-
+commonLabels:
+  app.kubernetes.io/name: spring-petclinic
+resources:
+  - github.com/samarsinghal/spring-boot-web
