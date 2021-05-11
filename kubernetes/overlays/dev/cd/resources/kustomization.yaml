@@ -3,7 +3,7 @@ namePrefix: spring-petclinic-
 commonLabels:
   app.kubernetes.io/name: spring-petclinic
 images:
-- digest: sha256:6458c478390cfc6b0969c87c418e76fa93f204b149d07f782aee9f0d06f8b224
+- digest: sha256:a38d55a2edc188d06a2f3d56b7547a24839edb7022fc56523bfb5c293234d947
   name: harbor.tanzu.frankcarta.com/apps/spring-petclinic
 - name: repository-project/application:1.0.0
   newName: harbor.tanzu.frankcarta.com/apps/spring-petclinic
